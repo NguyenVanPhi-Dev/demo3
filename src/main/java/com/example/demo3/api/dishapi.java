@@ -1,7 +1,9 @@
 package com.example.demo3.api;
 
 import com.example.demo3.entity.Dish;
+import com.example.demo3.entity.ResponseObject;
 import com.example.demo3.service.DishService;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,29 +19,40 @@ import java.util.Optional;
 public class dishapi {
     @Autowired private DishService dishService;
     @GetMapping("/getAllDish")
-    public ResponseEntity<List<Dish>> getApiDish(){
-        return ResponseEntity.ok(dishService.getAllDish());
+    public ResponseEntity<ResponseObject> getApiDish(){
+        Object dishList = dishService.getAllDish();
+        ResponseObject responseObject = new ResponseObject();
+        if(dishList == null){
+            responseObject.setStatusCode(404);
+            responseObject.setContentType("Data not found");
+            responseObject.setData(null);
+            return new ResponseEntity<>(responseObject,HttpStatus.OK);
+        }
+        responseObject.setStatusCode(200);
+        responseObject.setContentType("Data success");
+        responseObject.setData(dishList);
+        return new ResponseEntity<>(responseObject,HttpStatus.OK);
     }
     @GetMapping("/getById/{id}")
-    public ResponseEntity<Dish> getDishById(@PathVariable Long id){
-        Dish dish = dishService.findDishById(id).get();
+    public ResponseEntity<ResponseObject> getDishById(@PathVariable Long id){
+        Object dish = dishService.findDishById(id);
         if(dish == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ResponseObject(404,"Data not found", null),HttpStatus.OK);
         else
-        return new ResponseEntity<Dish>(dish,HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseObject(200,"Data find success", dish),HttpStatus.OK);
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Dish> cretateDish(@ModelAttribute Dish dish){
+    public ResponseEntity<ResponseObject> cretateDish(@ModelAttribute Dish dish){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("charset", "utf-8");
 
         if (dish == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseObject(404,"model error",null),HttpStatus.BAD_REQUEST);
         } else {
             // Xử lý và trả về response khi request body hợp lệ
-            return new ResponseEntity<>(dishService.saveDish(dish), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseObject(200,"Data save success", dishService.saveDish(dish)), HttpStatus.OK);
         }
     }
     @PutMapping("/update/{id}")

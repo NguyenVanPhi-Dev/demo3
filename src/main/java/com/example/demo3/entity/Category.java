@@ -1,11 +1,12 @@
 package com.example.demo3.entity;
 
 import javax.persistence.*;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "category")
+@Table (name = "category")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

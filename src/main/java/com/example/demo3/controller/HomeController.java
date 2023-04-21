@@ -2,6 +2,7 @@ package com.example.demo3.controller;
 
 import com.example.demo3.entity.Dish;
 import com.example.demo3.excel.WorkingExcel;
+import com.example.demo3.orther.UploadImage;
 import com.example.demo3.service.DishService;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("")
@@ -44,9 +50,24 @@ public class HomeController {
         return "redirect:/";
     }
     @PostMapping(value = "save")
-    public String save(@ModelAttribute Dish dish) {
-        System.out.println(dish.toString());
+    public String save(@ModelAttribute Dish dish,@RequestParam("files") MultipartFile multipartFile) {
+//        edit name of image
+        String fileName = multipartFile.getOriginalFilename();
+        String extension = fileName.substring(fileName.lastIndexOf(".")+1);
+
+
+// rename of image timestamp
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String newName = "image-"+ timestamp.getTime();
+        newName += "."+extension;
+        dish.setImage(newName);
+//        System.out.println(newName);
         dishService.saveDish(dish);
+        try {
+            UploadImage.uploadImage("src/main/resources/static/image/",newName,multipartFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/";
     }
     @GetMapping("upload-excel")

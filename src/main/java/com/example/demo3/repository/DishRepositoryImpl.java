@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 @Service
-                        public class DishRepositoryImpl implements DishService {
+public class DishRepositoryImpl implements DishService {
     @Autowired private DishRepository dishRepository;
     @PersistenceContext
     private EntityManager entityManager;
@@ -38,7 +38,11 @@ import java.util.Optional;
 
     @Override
     public void deleteDish(Long id) {
-        dishRepository.deleteById(id);
+//        find dish by dish id
+        Dish dish = dishRepository.findById(id).get();
+//        set status dish is 0 deleted 1 is active
+        dish.setStatus(0);
+        dishRepository.save(dish);
     }
     @Transactional
     @Override

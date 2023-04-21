@@ -2,7 +2,7 @@ var Url = "http://localhost:8080/api/";
 function getapi() {
     fetch('http://localhost:8080/api/getAllDish')
       .then(response => response.json())
-      .then(data => handleData(data))
+      .then(data => handleData(data["data"]))
       .catch(error => console.error(error));
 
     fetch('http://localhost:8080/api/category/getAll')
@@ -38,7 +38,9 @@ function handleData(data){
 
       const text = document.createElement('p');
       text.className = 'card-text';
-      text.textContent = 'Hello' ;
+      text.textContent = dish.price+" VNĐ" ;
+      text.style.color= "red";
+      text.style.fontWeight  = "bold";
 
       const link = document.createElement('a');
       link.className = 'btn btn-primary';
@@ -47,7 +49,6 @@ function handleData(data){
 
       cardBody.appendChild(title);
       cardBody.appendChild(text);
-      cardBody.appendChild(price);
       cardBody.appendChild(link);
 
       card.appendChild(img);
