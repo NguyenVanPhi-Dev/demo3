@@ -18,5 +18,7 @@ public interface DishService {
     void deleteByCategoryId(Long id);
 
     Optional<Dish> findDishById(Long id);
+    List<Dish> getByOrderId(Long id);
+    Object testjoin(Long id);
 
 }

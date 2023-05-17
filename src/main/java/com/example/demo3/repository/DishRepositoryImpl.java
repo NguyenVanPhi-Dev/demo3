@@ -1,6 +1,7 @@
 package com.example.demo3.repository;
 
 import com.example.demo3.entity.Dish;
+import com.example.demo3.entity.testEnity;
 import com.example.demo3.service.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,4 +62,22 @@ public class DishRepositoryImpl implements DishService {
     public Optional<Dish> findDishById(Long id) {
         return dishRepository.findById(id);
     }
+
+    @Override
+    public List<Dish> getByOrderId(Long id) {
+        String sql = "SELECT d.* FROM Dish d INNER JOIN orders_detail o ON d.id = o.dish_id and o.orders_id =:oderId";
+        Query query = entityManager.createNativeQuery(sql,Dish.class);
+        query.setParameter("oderId",id);
+        return query.getResultList();
+    }
+
+    @Override
+    public Object testjoin(Long id) {
+        String sql = "SELECT d.*,o.description  FROM Dish d INNER JOIN orders_detail o ON d.id = o.dish_id and o.orders_id =:oderId";
+        Query query = entityManager.createNativeQuery(sql, testEnity.class);
+        query.setParameter("oderId",id);
+        return query.getResultList();
+    }
+
+
 }

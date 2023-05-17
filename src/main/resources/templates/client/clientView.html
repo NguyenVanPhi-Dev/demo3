@@ -9,51 +9,170 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <style>
-      .card {
-        margin-left: 5px;
-        margin-bottom: 10px;
-      }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
   </head>
   <body>
-    <div class="container" >
-      <div class="row">
-        <div class="col-2" id="menu-list">
-          <h3>Tính năng</h3>
-          <nav class="navbar navbar-light bg-light">
-            <a class="navbar-brand" th:href="@{/}">Danh sách sản phẩm</a>
-          </nav>
-          <nav class="navbar navbar-light bg-light">
-            <a class="navbar-brand" th:href="@{/add}">Thêm sản phẩm</a>
-          </nav>
-          <nav class="navbar navbar-light bg-light">
-            <a class="navbar-brand" th:href="@{/upload-excel}">Nhập file excel</a>
-          </nav>
-         
-          <h3>Danh mục: </h3>
+  <body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3 hidden-xs">
+        <div class="list-group">
+          <a th:href="@{/}" class="list-group-item">Danh sách sản phẩm</a>
+          <a th:href="@{/add}" class="list-group-item">Thêm sản phẩm</a>
+          <a th:href="@{/upload-excel}" class="list-group-item">Nhập file excel</a>
+          <a th:href="@{/download}" class="list-group-item">File excel danh sách sp</a>
         </div>
-        <div class="col-10" id="dish-list">
-          <!-- <div class="card" style="width: 18rem; display: inline-block">
-            <img
-              class="card-img-top"
-              src="..."
-              alt="Card image cap"
-              style="height: 12rem"
-            />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div> -->
 
+        <div class="product-sidebar">
+          <h5 class="text-center">Featured</h5>
+          <!-- Featured Product Item -->
+          <!-- <div class="product-item">
+              <div class="image">
+                  <a href="#"><img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="Product 4"></a>
+              </div>
+              <div class="name">
+                  <a href="#">Leather laptop bag</a>
+              </div>
+              <div class="price">
+                  <span>$722.00</span>
+              </div>
+          </div> -->
+          <!--/ Featured Product Item -->
+
+          <!-- Featured Product Item -->
+          <!-- <div class="product-item">
+              <div class="image">
+                  <a href="#"><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Product 2"></a>
+              </div>
+              <div class="name">
+                  <a href="#">Leather laptop bag navy</a>
+              </div>
+              <div class="price">
+                  <span class="price-new">$866.00</span>
+              </div>
+          </div> -->
+          <!--/ Featured Product Item -->
+
+          <!-- Featured Product Item -->
+          <!-- <div class="product-item">
+              <div class="image">
+                  <a href="#"><img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Product 3"></a>
+              </div>
+              <div class="name">
+                  <a href="#">Soft leather laptop bag</a>
+              </div>
+              <div class="price">
+                  <span>$962.00</span>
+              </div>
+          </div> -->
+        </div>
+      </div>
+      <div class="col-sm-9">
+        <!-- <div class="row">
+            <div class="col-sm-4">
+                <div class="btn-group hidden-xs">
+                    <button type="button" id="list-view" class="btn btn-default" data-toggle="tooltip" data-container="body" title="List View"><i class="fa fa-th-list"></i></button>
+                    <button type="button" id="grid-view" class="btn btn-default" data-toggle="tooltip" data-container="body" title="Grid View"><i class="fa fa-th"></i></button>
+                </div>
+            </div>
+            <div class="col-sm-2 text-right">
+                <label class="control-label" for="input-sort">Sort By:</label>
+            </div>
+            <div class="col-sm-3 text-right">
+                <select id="input-sort" class="form-control">
+                <option value="" selected="selected">Default</option>
+                <option value="">Name</option>
+                <option value="">Date</option>
+            </select>
+            </div>
+            <div class="col-sm-1 text-right">
+                <label class="control-label" for="input-limit">Show:</label>
+            </div>
+            <div class="col-sm-2 text-right">
+                <select id="input-limit" class="form-control">
+                <option value="" selected="selected">9</option>
+                <option value="">15</option>
+                <option value="">25</option>
+                <option value="">50</option>
+                <option value="">100</option>
+            </select>
+            </div>
+        </div> -->
+        <div class="row" id="list-item-product">
+          <!-- Product Item -->
+          <!-- <div class="product-list col-xs-12">
+              <div class="product-item">
+                  <div class="item-overlay">
+                      <div class="clickable">
+                          <a href="#">Leather laptop bag navy</a>
+                      </div>
+                  </div>
+                  <div class="image">
+                      <a href="#"><img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="Product 1"></a>
+                  </div>
+                  <div class="caption">
+                      <div class="name">
+                          <a href="#">Leather laptop bag navy</a>
+                      </div>
+                      <div class="description">
+                          <p>Stop your co-workers in their tracks with the stunning new 30-inch diagonal HP LP3065 Flat Panel..</p>
+                      </div>
+                      <div class="rating">
+                          <span class="fa fa-stack"><i class="fa fa-star"></i></span>
+                          <span class="fa fa-stack"><i class="fa fa-star"></i></span>
+                          <span class="fa fa-stack"><i class="fa fa-star"></i></span>
+                          <span class="fa fa-stack"><i class="fa fa-star"></i></span>
+                          <span class="fa fa-stack"><i class="fa fa-star-o"></i></span>
+                      </div>
+                      <div class="price">
+                          <span>$866.00</span>
+                      </div>
+                      <div class="cart">
+                          <button type="button" class="btn btn-primary">Add to Cart</button>
+                      </div>
+                  </div>
+                  <button type="button" class="btn btn-default wishlist" data-toggle="tooltip" data-placement="right" title="Wishlist"><i class="fa fa-heart"></i></button>
+                  <button type="button" class="btn btn-default compare" data-toggle="tooltip" data-placement="right" title="Compare"><i class="fa fa-circle-o"></i></button>
+              </div>
+          </div> -->
+          <!--/ Product Item -->
         </div>
       </div>
     </div>
-    <script th:src="@{/static/app.js}"></script>
+  </div>
+  <div class="show-bill">
+    <i class="fa-solid fa-list" onclick="showBill()"></i>
+  </div>
+  <div class="bill row" >
+    <div class="button-show">
+      <i class="fa-solid fa-xmark" onclick="hideBill()"></i>
+    </div>
+    <form action="" style="width:80%;margin: 0 auto;">
+      <div >
+        <label for="bills" class="form-text">Mã hoá đơn</label>
+        <input type="text" id="bills"  name="bills" class="form-control">
+      </div>
+      <div >
+        <label for="listtable" class="form-text">Bàn ăn</label>
+        <input type="text" id="listtable"  name="listtable" class="form-control">
+      </div>
+      <div >
+        <label for="lishDish" class="form-text">Danh sách món ăn</label>
+        <input type="text" id="lishDish"  name="lishDish" class="form-control">
+      </div>
+      <div >
+        <label for="prices" class="form-text">Số tiền</label>
+        <input type="text" id="prices"  name="prices" class="form-control">
+      </div>
+      <div >
+        <label for="buy" class="form-text">Đặt món</label>
+        <button id="buy"  name="buy" class="form-control btn btn-primary" >Đặt món</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="/static/app.js"></script>
   </body>
 </html>

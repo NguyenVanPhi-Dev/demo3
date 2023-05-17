@@ -56,27 +56,30 @@ public class dishapi {
         }
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<Dish> UpdateDish(@PathVariable("id") Long id, @ModelAttribute Dish dish){
+    public ResponseEntity<ResponseObject> UpdateDish(@PathVariable("id") Long id, @ModelAttribute Dish dish){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("charset", "utf-8");
         Optional<Dish> categoryOptional = dishService.findDishById(id);
         return categoryOptional.map(item -> {
             item.setId(dish.getId());
-            return new ResponseEntity<>(dishService.saveDish(dish), HttpStatus.OK);
-        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            return new ResponseEntity<>(new ResponseObject(200,"update success", dishService.saveDish(item)), HttpStatus.OK);
+        }).orElseGet(() -> new ResponseEntity<>(new ResponseObject(305,"upadte fail",null), HttpStatus.OK));
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Dish> remove(@PathVariable Long id){
+    public ResponseEntity<ResponseObject> remove(@PathVariable Long id){
         Optional<Dish> dishOptional = dishService.findDishById(id);
        return  dishOptional.map(dish -> {
             dishService.deleteDish(id);
-            return new ResponseEntity<Dish>(dish, HttpStatus.OK);
-        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            return new ResponseEntity<>(new ResponseObject(200,"Delete success",dish), HttpStatus.OK);
+        }).orElseGet(() -> new ResponseEntity<>(new ResponseObject(304,"Delete fail",null),HttpStatus.NOT_FOUND));
 
     }
     @GetMapping("dish/findByCategoryId/{id}")
-    public ResponseEntity<List<Dish>> searchByCate(@PathVariable("id") Long CategoryId){
-        return ResponseEntity.ok(dishService.findByCategoryId(CategoryId));
+    public ResponseEntity<ResponseObject> searchByCate(@PathVariable("id") Long CategoryId){
+        List<Dish> dish = dishService.findByCategoryId(CategoryId);
+        if (dish.isEmpty())
+            return ResponseEntity.ok(new ResponseObject(404,"Find fail", null));
+        return ResponseEntity.ok(new ResponseObject(200,"Find success", dish));
     }
 }

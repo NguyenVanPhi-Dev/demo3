@@ -11,4 +11,5 @@ public interface OrdersService {
     Order saveOrder(Order order);
     Order getByTableId(Long id);
     Optional<Order> findById(Long id);
+    Order getOrderByTableId(Long id);
 }

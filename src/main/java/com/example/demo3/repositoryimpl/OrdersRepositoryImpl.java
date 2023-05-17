@@ -6,10 +6,7 @@ import com.example.demo3.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Table;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -38,5 +35,13 @@ public class OrdersRepositoryImpl implements OrdersService {
     @Override
     public Optional<Order> findById(Long id) {
         return Optional.empty();
+    }
+
+    @Override
+    public Order getOrderByTableId(Long id) {
+        String orderOfTable = "SELECT o FROM Order o where o.table_id = :tableId and status = 1";
+        Query query = entityManager.createQuery(orderOfTable,Order.class);
+        query.setParameter("tableId",id);
+        return (Order) query.getSingleResult();
     }
 }

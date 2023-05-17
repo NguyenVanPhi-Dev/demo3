@@ -44,8 +44,8 @@ public class HomeController {
         model.addAttribute("dish", new Dish());
         return "add";
     }
-    @GetMapping("delete")
-    public String delete(@RequestParam("id") Long id){
+    @GetMapping("delete/{id}")
+    public String delete(@PathVariable("id") Long id){
         dishService.deleteDish(id);
         return "redirect:/";
     }
@@ -54,7 +54,7 @@ public class HomeController {
 //        edit name of image
         String fileName = multipartFile.getOriginalFilename();
         String extension = fileName.substring(fileName.lastIndexOf(".")+1);
-
+        String filePath = "src/main/resources/static/image/";
 
 // rename of image timestamp
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -64,7 +64,7 @@ public class HomeController {
 //        System.out.println(newName);
         dishService.saveDish(dish);
         try {
-            UploadImage.uploadImage("src/main/resources/static/image/",newName,multipartFile);
+            UploadImage.uploadImage(filePath,newName,multipartFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

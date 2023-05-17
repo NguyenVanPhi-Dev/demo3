@@ -11,21 +11,24 @@ public class OrdersDetail {
     private Long orders_id;
     private Long dish_id;
     private String description;
+    private Long count;
 
     public OrdersDetail() {
     }
 
-    public OrdersDetail(Long id, Long orders_id, Long dish_id, String description) {
-        this.id = id;
+    public OrdersDetail(Long orders_id, Long dish_id, String description, Long count) {
         this.orders_id = orders_id;
         this.dish_id = dish_id;
         this.description = description;
+        this.count = count;
     }
 
-    public OrdersDetail(Long orders_id, Long dish_id, String description) {
-        this.orders_id = orders_id;
-        this.dish_id = dish_id;
-        this.description = description;
+    public Long getCount() {
+        return count;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
     }
 
     public Long getId() {
