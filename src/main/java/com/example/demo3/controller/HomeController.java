@@ -60,10 +60,12 @@ public class HomeController {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String newName = "image-"+ timestamp.getTime();
         newName += "."+extension;
+        if(!multipartFile.isEmpty())
         dish.setImage(newName);
 //        System.out.println(newName);
         dishService.saveDish(dish);
         try {
+            if (!multipartFile.isEmpty())
             UploadImage.uploadImage(filePath,newName,multipartFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
