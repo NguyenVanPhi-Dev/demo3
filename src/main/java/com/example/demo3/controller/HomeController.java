@@ -12,16 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("")
@@ -60,16 +56,16 @@ public class HomeController {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String newName = "image-"+ timestamp.getTime();
         newName += "."+extension;
-        if(!multipartFile.isEmpty())
-        dish.setImage(newName);
-//        System.out.println(newName);
-        dishService.saveDish(dish);
-        try {
-            if (!multipartFile.isEmpty())
-            UploadImage.uploadImage(filePath,newName,multipartFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if(!multipartFile.isEmpty()){
+            try {
+                    UploadImage.uploadImage(filePath,newName,multipartFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
+        dish.setImage(newName);
+        dishService.saveDish(dish);
+
         return "redirect:/";
     }
     @GetMapping("upload-excel")

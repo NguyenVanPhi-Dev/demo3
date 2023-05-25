@@ -3,7 +3,6 @@ package com.example.demo3.api;
 import com.example.demo3.entity.Dish;
 import com.example.demo3.entity.ResponseObject;
 import com.example.demo3.service.DishService;
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,70 +15,71 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api")
-public class dishapi {
+public class DishApi {
     @Autowired private DishService dishService;
     @GetMapping("/getAllDish")
-    public ResponseEntity<ResponseObject> getApiDish(){
+    public ResponseObject getApiDish(){
         Object dishList = dishService.getAllDish();
         ResponseObject responseObject = new ResponseObject();
         if(dishList == null){
             responseObject.setStatusCode(404);
             responseObject.setContentType("Data not found");
             responseObject.setData(null);
-            return new ResponseEntity<>(responseObject,HttpStatus.OK);
+            return responseObject;
         }
         responseObject.setStatusCode(200);
         responseObject.setContentType("Data success");
         responseObject.setData(dishList);
-        return new ResponseEntity<>(responseObject,HttpStatus.OK);
+        return responseObject;
     }
     @GetMapping("/getById/{id}")
-    public ResponseEntity<ResponseObject> getDishById(@PathVariable Long id){
+    public ResponseObject getDishById(@PathVariable Long id){
         Object dish = dishService.findDishById(id);
         if(dish == null)
-            return new ResponseEntity<>(new ResponseObject(404,"Data not found", null),HttpStatus.OK);
-        else
-        return new ResponseEntity<>(new ResponseObject(200,"Data find success", dish),HttpStatus.OK);
+            return new ResponseObject(404,"Data not found", null);
+        else{
+            return new ResponseObject(200,"Data find success", dish);
+        }
     }
 
     @PostMapping("/save")
-    public ResponseEntity<ResponseObject> cretateDish(@ModelAttribute Dish dish){
+    public ResponseObject cretateDish(@ModelAttribute Dish dish){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("charset", "utf-8");
 
         if (dish == null) {
-            return new ResponseEntity<>(new ResponseObject(404,"model error",null),HttpStatus.BAD_REQUEST);
+            return new ResponseObject(404,"model error",null);
         } else {
             // Xử lý và trả về response khi request body hợp lệ
-            return new ResponseEntity<>(new ResponseObject(200,"Data save success", dishService.saveDish(dish)), HttpStatus.OK);
+            return new ResponseObject(200,"Data save success", dishService.saveDish(dish));
         }
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseObject> UpdateDish(@PathVariable("id") Long id, @ModelAttribute Dish dish){
+    public ResponseObject UpdateDish(@PathVariable("id") Long id, @ModelAttribute Dish dish){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("charset", "utf-8");
         Optional<Dish> categoryOptional = dishService.findDishById(id);
         return categoryOptional.map(item -> {
             item.setId(dish.getId());
-            return new ResponseEntity<>(new ResponseObject(200,"update success", dishService.saveDish(item)), HttpStatus.OK);
-        }).orElseGet(() -> new ResponseEntity<>(new ResponseObject(305,"upadte fail",null), HttpStatus.OK));
+            return new ResponseObject(200,"update success", dishService.saveDish(item));
+        }).orElseGet(() -> new ResponseObject(305,"upadte fail",null));
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ResponseObject> remove(@PathVariable Long id){
+    public ResponseObject remove(@PathVariable Long id){
         Optional<Dish> dishOptional = dishService.findDishById(id);
        return  dishOptional.map(dish -> {
             dishService.deleteDish(id);
-            return new ResponseEntity<>(new ResponseObject(200,"Delete success",dish), HttpStatus.OK);
-        }).orElseGet(() -> new ResponseEntity<>(new ResponseObject(304,"Delete fail",null),HttpStatus.NOT_FOUND));
+            return new ResponseObject(200,"Delete success",dish);
+        }).orElseGet(() -> new ResponseObject(304,"Delete fail",null));
 
     }
     @GetMapping("dish/findByCategoryId/{id}")
-    public ResponseEntity<ResponseObject> searchByCate(@PathVariable("id") Long CategoryId){
-        List<Dish> dish = dishService.findByCategoryId(CategoryId);
+    public ResponseObject searchByCate(@PathVariable("id") Long categoryId){
+        List<Dish> dish = dishService.findByCategoryId(categoryId);
         if (dish.isEmpty())
-            return ResponseEntity.ok(new ResponseObject(404,"Find fail", null));
-        return ResponseEntity.ok(new ResponseObject(200,"Find success", dish));
+            return new ResponseObject(404,"Find fail", null);
+        return new ResponseObject(200,"Find success", dish);
     }
 }

@@ -1,7 +1,6 @@
 package com.example.demo3.api;
 
 import com.example.demo3.entity.Category;
-import com.example.demo3.entity.Dish;
 import com.example.demo3.entity.ResponseObject;
 import com.example.demo3.service.CategoryService;
 import com.example.demo3.service.DishService;
@@ -12,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -49,7 +47,7 @@ public class CategoryApi {
         }
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseObject> UpdateDish(@PathVariable("id") Long id, @ModelAttribute Category category){
+    public ResponseEntity<ResponseObject> updateDish(@PathVariable("id") Long id, @ModelAttribute Category category){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("charset", "utf-8");
